@@ -1,23 +1,31 @@
-import logo from './logo.svg';
 import './App.css';
+import { useState } from 'react';
+import ToDoList from './components/ToDoList/ToDoList';
+import ToDoForm from './components/ToDoForm/Form';
+
+const todoList = [];
 
 function App() {
+  const [list, setList] = useState(todoList);
+
+  const addData = title => {
+    setList(prevState => {
+      return [...prevState, { id: Math.random(), title: title }];
+    });
+  };
+
+  const deleteData = id => {
+    setList(prevState => {
+      return prevState.filter(item => item.id !== id);
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <div className='container'>
+        <ToDoForm onAddData={addData} />
+        <ToDoList onDelete={deleteData} list={list} />
+      </div>
     </div>
   );
 }
